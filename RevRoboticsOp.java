@@ -26,9 +26,9 @@ public class RevRoboticsOp extends OpMode {
 
 
     final double RIGHTGrab_OPEN = 0.8;
-    final double RIGHTGrab_CLOSE = 0.4; //used to be 0.46
+    final double RIGHTGrab_CLOSE = 0.35; //used to be 0.4
     final double LEFTGrab_OPEN = 0.2;
-    final double LEFTGrab_CLOSE = 0.6; //used to be 0.54
+    final double LEFTGrab_CLOSE = 0.65; //used to be 0.6
 
     final double JEWEL_UP = 0;
     final double JEWEL_DOWN = 0+0.091; //new number: 0.222

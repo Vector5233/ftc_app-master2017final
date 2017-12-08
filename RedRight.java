@@ -59,21 +59,21 @@ public class RedRight extends LinearOpMode {
     float Lt, Rt;
 
     final double RIGHTGrab_OPEN = 0.8;
-    final double RIGHTGrab_CLOSE = 0.4; //used to be 0.46
+    final double RIGHTGrab_CLOSE = 0.35; //used to be 0.4
     final double LEFTGrab_OPEN = 0.2;
-    final double LEFTGrab_CLOSE = 0.6; //used to be 0.54
+    final double LEFTGrab_CLOSE = 0.65; //used to be 0.6
+
     final double RIGHTGrab_COMPLETEOPEN = 1;
     final double LEFTGrab_COMPLETEOPEN = 0;
 
     final double SPROCKET_RATIO = 2.0/3.0;
     final double TICKS_PER_INCH = SPROCKET_RATIO*(1120.0/(2*2*3.14159));
+
     final double JEWEL_UP = 0;
     final double JEWEL_DOWN = 0+0.091;
 
     double RaiseArm = 1.0;
     double LowerArm = 0.0;
-
-    double ForwardPower = 1.0;
 
     OpenGLMatrix lastLocation = null;
 
@@ -91,7 +91,7 @@ public class RedRight extends LinearOpMode {
         liftMotor.setPower(1.0);
         sleep(500);
         liftMotor.setPower(0.0);
-        ray. JewelKnocker();
+        ray.RedKnocker();
 
 
         switch (vuMark){
@@ -104,8 +104,8 @@ public class RedRight extends LinearOpMode {
                 sleep(500);
                 drive. StrafeRightDistance(0.3,6);
                 sleep(500);
-                drive. DriveForwardDistance(0.5,12);
-                sleep(500);
+                //drive. DriveForwardDistance(0.5,12);
+                //sleep(500);
                 drive. DeliverGlyph();
                 break;
             }
@@ -115,11 +115,11 @@ public class RedRight extends LinearOpMode {
                 drive. TurnRightDegree(0.5,80);
                 sleep(500);
                 drive. DriveForwardDistance(0.5,25);
-                sleep( 500);
+                sleep(500);
                 drive. StrafeRightDistance(0.3,18);
                 sleep(500);
-                drive. DriveForwardDistance(0.5,12);
-                sleep(500);
+                //drive. DriveForwardDistance(0.5,12);
+                //sleep(500);
                 drive. DeliverGlyph();
                 break;
             }
@@ -132,8 +132,8 @@ public class RedRight extends LinearOpMode {
                 sleep(500);
                 drive. StrafeRightDistance(0.3,12);
                 sleep(500);
-                drive. DriveForwardDistance(0.5,12);
-                sleep(500);
+                //drive. DriveForwardDistance(0.5,12);
+                //sleep(500);
                 drive. DeliverGlyph();
                 break;
             }
@@ -146,8 +146,8 @@ public class RedRight extends LinearOpMode {
                 sleep(500);
                 drive. StrafeRightDistance(0.3,12);
                 sleep(500);
-                drive. DriveForwardDistance(0.5,12);
-                sleep(500);
+                //drive. DriveForwardDistance(0.5,12);
+                //sleep(500);
                 drive. DeliverGlyph();
                 break;
             }
@@ -186,7 +186,6 @@ public class RedRight extends LinearOpMode {
         drive = new Drive(frontLeft,frontRight,backLeft,backRight, liftMotor, gyro, leftGrab,rightGrab, this);
         ray = new RaymondAutonomousOpMode(drive, jewelKnocker, colorSensor, this);
     }
-
 
 
     public RelicRecoveryVuMark ReadPictograph(){

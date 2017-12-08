@@ -4,6 +4,7 @@ import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 /**
@@ -199,7 +200,7 @@ public class Drive extends Object {
 
 
 
-    public void DriveBackwardDistance(double power, double distance) throws InterruptedException {
+    public void DriveBackwardDistance(double power, double distance) {
         // distance in inches
         int ticks = (int)(distance * TICKS_PER_INCH);
         if (power>0.65){power = 0.65;}
@@ -237,13 +238,74 @@ public class Drive extends Object {
         backRight.setPower(0.0);
     }
 
+    public void DriveForwardTime (double power, long time){//4 sec.
+        // distance in inches
+
+        if (power>0.65){power = 0.65;}
+
+        frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        frontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        frontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        frontLeft.setPower(power);
+        frontRight.setPower(power);
+        backLeft.setPower(power);
+        backRight.setPower(power);
+
+        opmode.sleep(time);
+
+        StopDriving();
+
+        frontLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+    }
+    public void DriveBackforwardTime (double power,long time) {//4 sec.
+        // distance in inches
+
+        if (power > 0.65) {
+            power = 0.65;
+        }
+
+        frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        backRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        frontLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        frontRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backLeft.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backRight.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        frontLeft.setPower(-power);
+        frontRight.setPower(-power);
+        backLeft.setPower(-power);
+        backRight.setPower(-power);
+
+        opmode.sleep(time);
+
+        StopDriving();
+
+    }
+
     public void DeliverGlyph() {
-        liftMotor.setDirection(DcMotor.Direction.FORWARD);
-        DriveForwardDistance(0.5, 3.5);
+        liftMotor.setDirection(DcMotor.Direction.FORWARD); //FORWARD Raises Lift
+        opmode.sleep(500);
+        liftMotor.setPower(-1.0);
+        opmode.sleep(500);
         leftGrab.setPosition(LEFTGrab_OPEN);
         rightGrab.setPosition(RIGHTGrab_OPEN);
-        DriveForwardDistance(0.5, 1.5);
-        liftMotor.setPower(-1.0);
+        opmode.sleep(500);
+        DriveForwardTime (0.5,2000);
+        opmode.sleep(500);
+        DriveBackwardDistance(1,3.5);
         opmode.sleep(500);
         liftMotor.setPower(0);
         StopDriving();

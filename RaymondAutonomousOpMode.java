@@ -26,7 +26,7 @@ public class RaymondAutonomousOpMode extends Object {
         colorSensor = CS;
         opmode = L;
     }
-    public void JewelKnocker(){
+    public void RedKnocker(){
         LowerJewelKnocker();
         opmode.sleep(2000);
         opmode.telemetry.addData("Red: ", colorSensor.red());
@@ -34,14 +34,37 @@ public class RaymondAutonomousOpMode extends Object {
         opmode.telemetry.update();
         if (colorSensor.red() < colorSensor.blue()) {
             drive.TurnLeftDegree(0.3,21);
-            drive.TurnRightDegree(0.3,21);
             RaiseJewelKnocker();
+            opmode.sleep(500);
+            drive.TurnRightDegree(0.3,24);
         } else {
             drive.TurnRightDegree(0.3,21);
-            drive.TurnLeftDegree(0.3,21);
             RaiseJewelKnocker();
+            opmode.sleep(500);
+            drive.TurnLeftDegree(0.3,24);
         }
     }
+
+    public void BlueKnocker() {
+        LowerJewelKnocker();
+        opmode.sleep(2000);
+        opmode.telemetry.addData("Red: ", colorSensor.red());
+        opmode.telemetry.addData("Blue: ", colorSensor.blue());
+        opmode.telemetry.update();
+        if (colorSensor.blue() < colorSensor.red()) {
+            drive.TurnLeftDegree(0.3, 21);
+            RaiseJewelKnocker();
+            opmode.sleep(500);
+            drive.TurnRightDegree(0.3, 24);
+        } else {
+            drive.TurnRightDegree(0.3, 21);
+            RaiseJewelKnocker();
+            opmode.sleep(500);
+            drive.TurnLeftDegree(0.3, 24);
+        }
+    }
+
+
 
     public void LowerJewelKnocker(){
         jewelKnocker.setPosition(JEWEL_DOWN);
