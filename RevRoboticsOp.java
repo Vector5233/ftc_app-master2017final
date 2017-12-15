@@ -7,7 +7,6 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-
 /**
  * Created by CCA on 8/16/2017.
  */
@@ -39,7 +38,7 @@ public class RevRoboticsOp extends OpMode {
         backLeft = hardwareMap.dcMotor.get("backLeft");
         backRight = hardwareMap.dcMotor.get("backRight");
         liftMotor = hardwareMap.dcMotor.get("liftMotor");
-        gyro = hardwareMap.get(ModernRoboticsI2cGyro.class, "gyro");
+        //gyro = hardwareMap.get(ModernRoboticsI2cGyro.class, "gyro");
 
         //colorSensor = hardwareMap.colorSensor.get("color");
         jewelKnocker = hardwareMap.servo.get("jewel");
@@ -64,12 +63,8 @@ public class RevRoboticsOp extends OpMode {
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        gyro.calibrate();
-        while (gyro.isCalibrating()) {
-            ;
-        }
     }
+
     public void loop () {
 // 2 Drive: movement + tasks
         /*red = colorSensor.red();
@@ -86,7 +81,7 @@ public class RevRoboticsOp extends OpMode {
         /*telemetry.addData("Red: ", red);
         telemetry.addData("Green: ", green);
         telemetry.addData("Blue: ", blue);*/
-        telemetry.addData("gyro: ",gyro.getIntegratedZValue());
+        //telemetry.addData("gyro: ",gyro.getIntegratedZValue());
         telemetry.addData("Front Left:", gamepad1.left_stick_y-gamepad1.left_stick_x-gamepad1.right_stick_x);
         telemetry.addData("Back Right:", gamepad1.left_stick_y-gamepad1.left_stick_x+gamepad1.right_stick_x);
 
@@ -158,14 +153,6 @@ public class RevRoboticsOp extends OpMode {
             leftGrab.setPosition(LEFTGrab_CLOSE);
         }
 
-        telemetry.update();
-
-
     }
-
-
-
-
-
 
 }

@@ -82,6 +82,7 @@ public class BlueRight extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+        //platform not balanced, drivebackward should have more distance, slide while turning left, drive forward should be further
         initialization();
         waitForStart();
         RelicRecoveryVuMark vuMark = ReadPictograph();
@@ -96,7 +97,7 @@ public class BlueRight extends LinearOpMode {
         sleep(500);
         drive.DriveForwardDistance(0.3,1);
         sleep(500);
-        drive.TurnLeftDegree(0.2, 86);
+        drive.TurnLeftDegree(0.2, 96); //used to 86
         sleep(500);
 
         switch (vuMark) {

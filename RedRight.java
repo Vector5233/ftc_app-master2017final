@@ -80,7 +80,7 @@ public class RedRight extends LinearOpMode {
     VuforiaLocalizer vuforia;
 
     @Override public void runOpMode() {
-
+//strafe too far, or the pervious drivefoward
         initialization();
         waitForStart();
         RelicRecoveryVuMark vuMark = ReadPictograph();
@@ -100,9 +100,9 @@ public class RedRight extends LinearOpMode {
                 sleep(500);
                 drive. TurnRightDegree(0.5,80);
                 sleep(500);
-                drive. DriveForwardDistance(0.5,25);
+                drive. DriveForwardDistance(0.5,22); //previously 25
                 sleep(500);
-                drive. StrafeRightDistance(0.3,6);
+                drive. StrafeRightDistance(0.3,4);
                 sleep(500);
                 //drive. DriveForwardDistance(0.5,12);
                 //sleep(500);
@@ -114,9 +114,9 @@ public class RedRight extends LinearOpMode {
                 sleep(500);
                 drive. TurnRightDegree(0.5,80);
                 sleep(500);
-                drive. DriveForwardDistance(0.5,25);
+                drive. DriveForwardDistance(0.5, 22);
                 sleep(500);
-                drive. StrafeRightDistance(0.3,18);
+                drive. StrafeRightDistance(0.3,20);//previously 16
                 sleep(500);
                 //drive. DriveForwardDistance(0.5,12);
                 //sleep(500);
@@ -128,9 +128,9 @@ public class RedRight extends LinearOpMode {
                 sleep(500);
                 drive. TurnRightDegree(0.5,80);
                 sleep(500);
-                drive. DriveForwardDistance(0.5,25);
+                drive. DriveForwardDistance(0.5,22);
                 sleep(500);
-                drive. StrafeRightDistance(0.3,12);
+                drive. StrafeRightDistance(0.3,10);
                 sleep(500);
                 //drive. DriveForwardDistance(0.5,12);
                 //sleep(500);
@@ -142,9 +142,9 @@ public class RedRight extends LinearOpMode {
                 sleep(500);
                 drive. TurnRightDegree(0.5,80);
                 sleep(500);
-                drive. DriveForwardDistance(0.5,25);
+                drive. DriveForwardDistance(0.5,22);
                 sleep(500);
-                drive. StrafeRightDistance(0.3,12);
+                drive. StrafeRightDistance(0.3,10);
                 sleep(500);
                 //drive. DriveForwardDistance(0.5,12);
                 //sleep(500);

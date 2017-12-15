@@ -302,12 +302,12 @@ public class Drive extends Object {
         opmode.sleep(500);
         leftGrab.setPosition(LEFTGrab_OPEN);
         rightGrab.setPosition(RIGHTGrab_OPEN);
+        opmode.sleep(250);
+        liftMotor.setPower(0.0);
         opmode.sleep(500);
         DriveForwardTime (0.5,2000);
         opmode.sleep(500);
         DriveBackwardDistance(1,3.5);
-        opmode.sleep(500);
-        liftMotor.setPower(0);
         StopDriving();
     }
 }

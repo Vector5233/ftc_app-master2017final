@@ -67,16 +67,17 @@ public class BlueLeft extends LinearOpMode {
         liftMotor.setPower(0.0);
         ray.BlueKnocker();
 
-
         switch (vuMark){
             case LEFT: {
-                drive. DriveForwardDistance(0.5,27);
-                sleep(500);
-                drive. TurnLeftDegree(0.5,90);
-                sleep(500);
+                // Case Left is Case Right in red right
+
                 drive. DriveForwardDistance(0.5,25);
                 sleep(500);
-                drive. StrafeLeftDistance(0.3,28);
+                drive. TurnLeftDegree(0.5,80);
+                sleep(500);
+                drive. DriveForwardDistance(0.5,22);
+                sleep(500);
+                drive. StrafeLeftDistance(0.3,20);
                 sleep(500);
                 //drive. DriveForwardDistance(0.5,12);
                 //sleep(500);
@@ -84,13 +85,15 @@ public class BlueLeft extends LinearOpMode {
                 break;
             }
             case RIGHT: {
-                drive. DriveForwardDistance(0.5,27);
-                sleep(500);
-                drive. TurnLeftDegree(0.5,90);
-                sleep(500);
+                // Case Right is Case Left in red right
+
                 drive. DriveForwardDistance(0.5,25);
                 sleep(500);
-                drive. StrafeLeftDistance(0.3,16);
+                drive. TurnLeftDegree(0.5,80);
+                sleep(500);
+                drive. DriveForwardDistance(0.5,22);
+                sleep(500);
+                drive. StrafeLeftDistance(0.3,4);
                 sleep(500);
                 //drive. DriveForwardDistance(0.5,12);
                 //sleep(500);
@@ -98,13 +101,13 @@ public class BlueLeft extends LinearOpMode {
                 break;
             }
             case CENTER: {
-                drive. DriveForwardDistance(0.5,27);
-                sleep(500);
-                drive. TurnLeftDegree(0.5,90);
-                sleep(500);
                 drive. DriveForwardDistance(0.5,25);
                 sleep(500);
-                drive. StrafeLeftDistance(0.3,22);
+                drive. TurnLeftDegree(0.5,80);
+                sleep(500);
+                drive. DriveForwardDistance(0.5,22);
+                sleep(500);
+                drive. StrafeLeftDistance(0.3,10);
                 sleep(500);
                 //drive. DriveForwardDistance(0.5,12);
                 //sleep(500);
@@ -112,13 +115,13 @@ public class BlueLeft extends LinearOpMode {
                 break;
             }
             default:{
-                drive. DriveForwardDistance(0.5,27);
-                sleep(500);
-                drive. TurnLeftDegree(0.5,90);
-                sleep(500);
                 drive. DriveForwardDistance(0.5,25);
                 sleep(500);
-                drive. StrafeLeftDistance(0.3,14);
+                drive. TurnLeftDegree(0.5,80);
+                sleep(500);
+                drive. DriveForwardDistance(0.5,22);
+                sleep(500);
+                drive. StrafeLeftDistance(0.3,10);
                 sleep(500);
                 //drive. DriveForwardDistance(0.5,12);
                 //sleep(500);

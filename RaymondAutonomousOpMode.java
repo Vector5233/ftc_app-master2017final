@@ -28,7 +28,7 @@ public class RaymondAutonomousOpMode extends Object {
     }
     public void RedKnocker(){
         LowerJewelKnocker();
-        opmode.sleep(2000);
+        opmode.sleep(3000);//used to be 2000
         opmode.telemetry.addData("Red: ", colorSensor.red());
         opmode.telemetry.addData("Blue: ", colorSensor.blue());
         opmode.telemetry.update();
@@ -37,17 +37,21 @@ public class RaymondAutonomousOpMode extends Object {
             RaiseJewelKnocker();
             opmode.sleep(500);
             drive.TurnRightDegree(0.3,24);
+        } else if (colorSensor.red() == 0 && colorSensor.blue() == 0){
+            RaiseJewelKnocker();
+            opmode.sleep(500);
         } else {
             drive.TurnRightDegree(0.3,21);
             RaiseJewelKnocker();
             opmode.sleep(500);
             drive.TurnLeftDegree(0.3,24);
         }
+
     }
 
     public void BlueKnocker() {
         LowerJewelKnocker();
-        opmode.sleep(2000);
+        opmode.sleep(3000);//used qto be 2000
         opmode.telemetry.addData("Red: ", colorSensor.red());
         opmode.telemetry.addData("Blue: ", colorSensor.blue());
         opmode.telemetry.update();
@@ -56,7 +60,10 @@ public class RaymondAutonomousOpMode extends Object {
             RaiseJewelKnocker();
             opmode.sleep(500);
             drive.TurnRightDegree(0.3, 24);
-        } else {
+        } else if (colorSensor.red() == 0 && colorSensor.blue() == 0){
+            RaiseJewelKnocker();
+            opmode.sleep(500);
+         } else {
             drive.TurnRightDegree(0.3, 21);
             RaiseJewelKnocker();
             opmode.sleep(500);
