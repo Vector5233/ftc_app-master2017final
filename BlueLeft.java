@@ -13,8 +13,6 @@ import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
-import org.firstinspires.ftc.teamcode.Drive;
-import org.firstinspires.ftc.teamcode.RaymondAutonomousOpMode;
 
 @Autonomous(name="BlueLeft", group ="Concept")
 
@@ -22,7 +20,7 @@ public class BlueLeft extends LinearOpMode {
     public static final String TAG = "Vuforia VuMark Sample";
 
     DcMotor frontLeft, liftMotor, frontRight, backLeft, backRight;
-    Servo leftGrab, rightGrab, jewelKnocker;
+    Servo topLeftGrab, topRightGrab, bottomLeftGrab, bottomRightGrab, jewelKnocker, jewelRaiser;
     ModernRoboticsI2cGyro gyro;
     ColorSensor colorSensor;
     float red, green, blue;
@@ -32,22 +30,23 @@ public class BlueLeft extends LinearOpMode {
 
     float Lt, Rt;
 
-    final double RIGHTGrab_OPEN = 0.8;
+    final double RIGHTGrab_COMPLETEOPEN = 0.8;
     final double RIGHTGrab_CLOSE = 0.35; //used to be 0.4
-    final double LEFTGrab_OPEN = 0.2;
+    final double LEFTGrab_COMPLETEOPEN = 0.2;
     final double LEFTGrab_CLOSE = 0.65; //used to be 0.6
-
-    final double RIGHTGrab_COMPLETEOPEN = 1;
-    final double LEFTGrab_COMPLETEOPEN = 0;
+    final double RIGHTGrab_OPEN = 0.5;
+    final double LEFTGrab_OPEN = 0.5;
 
     final double SPROCKET_RATIO = 2.0/3.0;
     final double TICKS_PER_INCH = SPROCKET_RATIO*(1120.0/(2*2*3.14159));
 
-    final double JEWEL_UP = 0;
-    final double JEWEL_DOWN = 0+0.091;
-
-    double RaiseArm = 1.0;
-    double LowerArm = 0.0;
+    // Right, left, and center are facing the back of the bot
+    final double JEWEL_UP = 0.94;
+    final double JEWEL_DOWN = 0.38;
+    final double JEWEL_RIGHT = 0.25;
+    final double JEWEL_CENTER = 0.15;
+    final double JEWEL_LEFT = 0.05;
+    final double JEWEL_RETRY = 0.12;
 
     OpenGLMatrix lastLocation = null;
 
@@ -59,8 +58,10 @@ public class BlueLeft extends LinearOpMode {
         waitForStart();
         RelicRecoveryVuMark vuMark = ReadPictograph();
         sleep(1000);
-        rightGrab.setPosition(RIGHTGrab_CLOSE);
-        leftGrab.setPosition(LEFTGrab_CLOSE);
+        topRightGrab.setPosition(RIGHTGrab_CLOSE);
+        topLeftGrab.setPosition(LEFTGrab_CLOSE);
+        bottomRightGrab.setPosition(LEFTGrab_CLOSE);
+        bottomLeftGrab.setPosition(RIGHTGrab_CLOSE);
         sleep(500);
         liftMotor.setPower(1.0);
         sleep(500);
@@ -142,12 +143,15 @@ public class BlueLeft extends LinearOpMode {
 
         colorSensor = hardwareMap.colorSensor.get("color");
         jewelKnocker = hardwareMap.servo.get("jewel");
-        jewelKnocker.setPosition(JEWEL_UP);
+        jewelRaiser = hardwareMap.servo.get("raise");
+        jewelRaiser.setPosition(JEWEL_UP);
 
-        rightGrab = hardwareMap.servo.get("rightGrab");
-        leftGrab = hardwareMap.servo.get("leftGrab");
-        rightGrab.setPosition(RIGHTGrab_COMPLETEOPEN);
-        leftGrab.setPosition(LEFTGrab_COMPLETEOPEN);
+        topRightGrab = hardwareMap.servo.get("topRightGrab");
+        topLeftGrab = hardwareMap.servo.get("topLeftGrab");
+        topRightGrab.setPosition(RIGHTGrab_COMPLETEOPEN);
+        topLeftGrab.setPosition(LEFTGrab_COMPLETEOPEN);
+        bottomRightGrab.setPosition(LEFTGrab_COMPLETEOPEN);
+        bottomLeftGrab.setPosition(RIGHTGrab_COMPLETEOPEN);
 
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
         frontRight.setDirection(DcMotor.Direction.FORWARD);
@@ -160,8 +164,8 @@ public class BlueLeft extends LinearOpMode {
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        drive = new Drive(frontLeft,frontRight,backLeft,backRight, liftMotor, gyro, leftGrab,rightGrab, this);
-        ray = new RaymondAutonomousOpMode(drive, jewelKnocker, colorSensor, this);
+        drive = new Drive(frontLeft,frontRight,backLeft,backRight, liftMotor, gyro, topLeftGrab, topRightGrab, bottomLeftGrab, bottomRightGrab, this);
+        ray = new RaymondAutonomousOpMode(drive, jewelKnocker, jewelRaiser, colorSensor, this);
     }
 
 

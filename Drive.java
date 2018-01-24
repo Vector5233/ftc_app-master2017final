@@ -4,7 +4,6 @@ import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 /**
@@ -14,39 +13,48 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class Drive extends Object {
 
     DcMotor frontLeft, frontRight, backLeft, backRight, liftMotor;
-    Servo jewelKnocker, leftGrab, rightGrab;
+    Servo jewelKnocker, topLeftGrab, topRightGrab, jewelRaiser, bottomLeftGrab, bottomRightGrab;
     ModernRoboticsI2cGyro gyro;
     LinearOpMode opmode;
     ColorSensor colorSensor;
     float red, green, blue;
 
-    final double SPROCKET_RATIO = 2.0/3.0;
-    final double TICKS_PER_INCH = SPROCKET_RATIO*(1120.0/(2*2*3.14159));
-    final double ROBOT_RADIUS   = (135/103.25)*5.75;
+    final double SPROCKET_RATIO = 2.0 / 3.0;
+    final double TICKS_PER_INCH = SPROCKET_RATIO * (1120.0 / (2 * 2 * 3.14159));
+    final double ROBOT_RADIUS = (135 / 103.25) * 5.75;
 
-    final double RIGHTGrab_OPEN = 0.8;
-    final double RIGHTGrab_CLOSE = 0.4; //used to be 0.46
-    final double LEFTGrab_OPEN = 0.2;
-    final double LEFTGrab_CLOSE = 0.6; //used to be 0.54
+    final double RIGHTGrab_COMPLETEOPEN = 0.8;
+    final double RIGHTGrab_CLOSE = 0.35; //used to be 0.4
+    final double LEFTGrab_COMPLETEOPEN = 0.2;
+    final double LEFTGrab_CLOSE = 0.65; //used to be 0.6
+    final double RIGHTGrab_OPEN = 0.5;
+    final double LEFTGrab_OPEN = 0.5;
 
-    public Drive(DcMotor FL, DcMotor FR, DcMotor BL, DcMotor BR, DcMotor LM, ModernRoboticsI2cGyro G, Servo LG, Servo RG, LinearOpMode L) {
+    public Drive(DcMotor FL, DcMotor FR, DcMotor BL, DcMotor BR, DcMotor LM, ModernRoboticsI2cGyro G, Servo TLG, Servo TRG, Servo BLG, Servo BRG, LinearOpMode L) {
         frontLeft = FL;
         backLeft = BL;
         backRight = BR;
         frontRight = FR;
         gyro = G;
         opmode = L;
-        leftGrab = LG;
-        rightGrab = RG;
+        topLeftGrab = TLG;
+        topRightGrab = TRG;
+        bottomLeftGrab = BLG;
+        bottomRightGrab = BRG;
         liftMotor = LM;
     }
 
     public void TurnLeftDegree(double power, double degrees) {
-
         // distance in inches
-
-        int ticks = (int)((2*3.14159/360)*degrees*ROBOT_RADIUS*TICKS_PER_INCH);
-        if (power>0.65){power = 0.65;}
+        //conjecture instead of moving 12", wheels will go 12"*cos(45)= 8.5"
+        int ticks = (int) ((2 * 3.14159 / 360) * degrees * ROBOT_RADIUS * TICKS_PER_INCH);
+        if (power > 0.65) {
+            power = 0.65;
+        }
+        double target;
+        opmode.telemetry.addData("Gyro", gyro.getIntegratedZValue());
+        opmode.telemetry.update();
+        target = gyro.getIntegratedZValue() + degrees;
 
         frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -68,16 +76,23 @@ public class Drive extends Object {
         backLeft.setPower(power);
         backRight.setPower(power);
 
-        while (frontRight.isBusy() &&frontLeft.isBusy());
+        while (frontRight.isBusy() && frontLeft.isBusy()) ;
 
         StopDriving();
+        TurnLeftCorrect(target);
     }
 
     public void TurnRightDegree(double power, double degrees) {
         // distance in inches
-
-        int ticks = (int)((2*3.14159/360)*degrees*ROBOT_RADIUS*TICKS_PER_INCH);
-        if (power>0.65){power = 0.65;}
+        //conjecture instead of moving 12", wheels will go 12"*cos(45)= 8.5"
+        int ticks = (int) ((2 * 3.14159 / 360) * degrees * ROBOT_RADIUS * TICKS_PER_INCH);
+        if (power > 0.65) {
+            power = 0.65;
+        }
+        double target;
+        opmode.telemetry.addData("Gyro", gyro.getIntegratedZValue());
+        opmode.telemetry.update();
+        target = gyro.getIntegratedZValue() - degrees;
 
         frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -99,16 +114,19 @@ public class Drive extends Object {
         backLeft.setPower(power);
         backRight.setPower(power);
 
-        while (frontRight.isBusy() &&frontLeft.isBusy());
+        while (frontRight.isBusy() && frontLeft.isBusy()) ;
 
         StopDriving();
+        TurnRightCorrect(target);
     }
 
-    public void StrafeRightDistance(double power, double distance){
+    public void StrafeRightDistance(double power, double distance) {
         // distance in inches
         //conjecture instead of moving 12", wheels will go 12"*cos(45)= 8.5"
-        int ticks = (int)(distance * TICKS_PER_INCH);
-        if (power>0.65){power = 0.65;}
+        int ticks = (int) (distance * TICKS_PER_INCH);
+        if (power > 0.65) {
+            power = 0.65;
+        }
 
         frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -130,15 +148,18 @@ public class Drive extends Object {
         backLeft.setPower(power);
         backRight.setPower(power);
 
-        while (frontRight.isBusy() &&frontLeft.isBusy());
+        while (frontRight.isBusy() && frontLeft.isBusy()) ;
 
         StopDriving();
     }
-    public void StrafeLeftDistance(double power, double distance){
+
+    public void StrafeLeftDistance(double power, double distance) {
         // distance in inches
         //conjecture instead of moving 12", wheels will go 12"*cos(45)= 8.5"
-        int ticks = (int)(distance * TICKS_PER_INCH);
-        if (power>0.65){power = 0.65;}
+        int ticks = (int) (distance * TICKS_PER_INCH);
+        if (power > 0.65) {
+            power = 0.65;
+        }
 
         frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -160,18 +181,20 @@ public class Drive extends Object {
         backLeft.setPower(power);
         backRight.setPower(power);
 
-        while (frontRight.isBusy() &&frontLeft.isBusy());
+        while (frontRight.isBusy() && frontLeft.isBusy()) ;
 
         StopDriving();
     }
 
 
-    public void DriveForwardDistance (double power, double distance){
+    public void DriveForwardDistance(double power, double distance) {
         // distance in inches
         //FR,FL,BR,BL, Back motors are slower to stop
         //Does the motors have the same issue in method "DriveBackwardDistance"
-        int ticks = (int)(distance * TICKS_PER_INCH);
-        if (power>0.65){power = 0.65;}
+        int ticks = (int) (distance * TICKS_PER_INCH);
+        if (power > 0.65) {
+            power = 0.65;
+        }
 
         frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -193,17 +216,18 @@ public class Drive extends Object {
         backLeft.setPower(power);
         backRight.setPower(power);
 
-        while (frontRight.isBusy() &&frontLeft.isBusy());
+        while (frontRight.isBusy() && frontLeft.isBusy()) ;
 
         StopDriving();
     }
-
 
 
     public void DriveBackwardDistance(double power, double distance) {
         // distance in inches
-        int ticks = (int)(distance * TICKS_PER_INCH);
-        if (power>0.65){power = 0.65;}
+        int ticks = (int) (distance * TICKS_PER_INCH);
+        if (power > 0.65) {
+            power = 0.65;
+        }
 
         frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -225,12 +249,12 @@ public class Drive extends Object {
         backLeft.setPower(power);
         backRight.setPower(power);
 
-        while (frontRight.isBusy() &&frontLeft.isBusy());
+        while (frontRight.isBusy() && frontLeft.isBusy()) ;
 
         StopDriving();
     }
 
-    public void StopDriving(){
+    public void StopDriving() {
 
         frontLeft.setPower(0.0);
         frontRight.setPower(0.0);
@@ -238,10 +262,12 @@ public class Drive extends Object {
         backRight.setPower(0.0);
     }
 
-    public void DriveForwardTime (double power, long time){//4 sec.
+    public void DriveForwardTime(double power, long time) {//4 sec.
         // distance in inches
 
-        if (power>0.65){power = 0.65;}
+        if (power > 0.65) {
+            power = 0.65;
+        }
 
         frontLeft.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         frontRight.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -267,7 +293,8 @@ public class Drive extends Object {
         backLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
-    public void DriveBackforwardTime (double power,long time) {//4 sec.
+
+    public void DriveBackwardTime(double power, long time) {//4 sec.
         // distance in inches
 
         if (power > 0.65) {
@@ -297,17 +324,80 @@ public class Drive extends Object {
 
     public void DeliverGlyph() {
         liftMotor.setDirection(DcMotor.Direction.FORWARD); //FORWARD Raises Lift
-        opmode.sleep(500);
+        opmode.sleep(700);
         liftMotor.setPower(-1.0);
         opmode.sleep(500);
-        leftGrab.setPosition(LEFTGrab_OPEN);
-        rightGrab.setPosition(RIGHTGrab_OPEN);
+        bottomLeftGrab.setPosition(RIGHTGrab_OPEN);
+        bottomRightGrab.setPosition(LEFTGrab_OPEN);
         opmode.sleep(250);
         liftMotor.setPower(0.0);
         opmode.sleep(500);
-        DriveForwardTime (0.5,2000);
+        DriveForwardTime(0.5, 2000);
         opmode.sleep(500);
-        DriveBackwardDistance(1,3.5);
+        DriveBackwardDistance(1, 6); // can back up more
         StopDriving();
     }
+
+    final double TOLERANCE = 2;
+    double target_angle_degrees = 90;
+
+
+
+    /*public void TurnToAngle(double target) {
+
+        double g = gyro.getHeading();
+        opmode.telemetry.addData("Gyro 1", g);
+        opmode.telemetry.update();
+
+        if (Math.abs(g - target) < TOLERANCE) {
+            return;
+        } else while (Math.abs(g - target) >= TOLERANCE && opmode.opModeIsActive()) {
+
+            frontLeft.setPower(0.01 * (g - target));
+            frontRight.setPower(0.01 * (target - g));
+            backRight.setPower(0.01 * (target - g));
+            backLeft.setPower(0.01 * (g - target));
+
+            gyro.getHeading();
+            g = gyro.getHeading();
+            opmode.telemetry.addData("Gyro 2", g);
+            opmode.telemetry.update();
+            StopDriving();
+        }*/
+// TODO: Create flag to avoid infinite recursion
+
+    public void TurnRightCorrect (double target) {
+
+        final double TOLERANCE = 2;
+        double g;
+
+        g = gyro.getIntegratedZValue();
+        opmode.telemetry.addData("Gyro", g);
+        opmode.telemetry.update();
+        if (g > target + TOLERANCE) {
+            TurnRightDegree(0.3, g - target);
+        } else if (g < target - TOLERANCE) {
+            TurnLeftDegree(0.3, target - g);
+        }
+        else {
+        }
+    }
+
+    public void TurnLeftCorrect (double target) {
+
+        final double TOLERANCE = 2;
+        double g;
+        g = gyro.getIntegratedZValue();
+        opmode.telemetry.addData("Gyro", g);
+        opmode.telemetry.update();
+        if (g > target + TOLERANCE){
+            TurnRightDegree(0.3, g - target);
+    } else if (g < target - TOLERANCE){
+            TurnLeftDegree(0.3, target - g);
+        }
+        else{
+
+        }
 }
+}
+

@@ -1,4 +1,4 @@
-package org.firstinspires.ftc.teamcode;
+/*package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 /**
  * Created by CCA on 11/21/2017.
  */
-@Disabled
+/*@Disabled
 @Autonomous(name = "RedRightTest")
 
 public class RedRightTest extends LinearOpMode {
@@ -24,7 +24,7 @@ public class RedRightTest extends LinearOpMode {
     DcMotor backRight = null;
     ColorSensor colorSensor = null;
     float red, green, blue;
-    Servo leftGrab, rightGrab = null;
+    Servo topLeftGrab, topRightGrab = null;
     Servo jewelKnocker = null;
     Drive drive;
 
@@ -58,8 +58,8 @@ public class RedRightTest extends LinearOpMode {
         //jewelKnocker.setPosition(jewelKnocker_Raised);
         RaiseJewelKnocker();
 
-        rightGrab = hardwareMap.servo.get("rightGrab");
-        leftGrab = hardwareMap.servo.get("leftGrab");
+        topRightGrab = hardwareMap.servo.get("topRightGrab");
+        leftGrab = hardwareMap.servo.get("topLeftGrab");
         rightGrab.setPosition(RIGHTGrab_CLOSE);
         leftGrab.setPosition(LEFTGrab_CLOSE);
 
@@ -74,7 +74,7 @@ public class RedRightTest extends LinearOpMode {
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        drive = new Drive(frontLeft, frontRight, backLeft, backRight, liftMotor, gyro, leftGrab, rightGrab, this);
+        drive = new Drive(frontLeft, frontRight, backLeft, backRight, liftMotor, gyro, topLeftGrab, topRightGrab, this);
     }
     @Override
     public void runOpMode () throws InterruptedException {
@@ -114,4 +114,4 @@ public class RedRightTest extends LinearOpMode {
 
     }
 
-}
+}*/

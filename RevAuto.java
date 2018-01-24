@@ -1,10 +1,15 @@
-package org.firstinspires.ftc.teamcode;
+/*package org.firstinspires.ftc.teamcode;
 
+/* ToDO 2018.01.16
+ * Hardware map jewelRaiser
+ * jewelRaiser in Config file
+ *
+ */
 /**
  * Created by CCA on 10/27/2017.
  */
 
-import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
+/*import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -23,7 +28,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
  * Created by CCA on 10/26/2017.
  */
 
-@Disabled
+/*@Disabled
 @Autonomous(name = "RevAuto")
 
 public class RevAuto extends LinearOpMode {
@@ -31,8 +36,7 @@ public class RevAuto extends LinearOpMode {
     DcMotor frontLeft, frontRight, backLeft, backRight, liftMotor;
     ColorSensor colorSensor;
     float red, green, blue;
-    Servo leftGrab, rightGrab;
-    Servo jewelKnocker;
+    Servo leftGrab, rightGrab, jewelKnocker, jewelRaiser;
     ModernRoboticsI2cGyro gyro;
     Drive drive;
     RaymondAutonomousOpMode ray;
@@ -70,12 +74,12 @@ public class RevAuto extends LinearOpMode {
         drive.TurnLeftDegree(0.5,90);
         sleep(5000);
         drive.TurnRightDegree(0.5,90);*/
-        drive.DeliverGlyph();
-    }
+        //drive.DeliverGlyph();
+    //}
 /*Time magic number: 1000 = 1 second*/
 
 
-    public void initialization () {
+/*    public void initialization () {
         frontLeft = hardwareMap.dcMotor.get("frontLeft");
         frontRight = hardwareMap.dcMotor.get("frontRight");
         backLeft = hardwareMap.dcMotor.get("backLeft");
@@ -111,7 +115,7 @@ public class RevAuto extends LinearOpMode {
         }
 
         drive = new Drive(frontLeft,frontRight,backLeft,backRight, liftMotor, gyro, leftGrab, rightGrab, this);
-        ray = new RaymondAutonomousOpMode (drive, jewelKnocker, colorSensor, this);
+        ray = new RaymondAutonomousOpMode (drive, jewelKnocker, jewelRaiser, colorSensor, this);
 
 
     }
@@ -162,6 +166,6 @@ public class RevAuto extends LinearOpMode {
         telemetry.update();
         return picto;
     }
-}
+}*/
 
 

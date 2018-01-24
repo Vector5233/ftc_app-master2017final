@@ -12,8 +12,8 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Created by CCA on 8/16/2017.
  */
 
-@TeleOp(name="RevRoboticsOp", group = "myGroup")
-public class RevRoboticsOp extends OpMode {
+@TeleOp(name="RevRoboticsOpSinglePlayer", group = "myGroup")
+public class RevRoboticsOpSinglePlayer extends OpMode {
 
 
     DcMotor frontLeft, frontRight, backLeft, backRight, liftMotor;
@@ -26,8 +26,6 @@ public class RevRoboticsOp extends OpMode {
 
     float Lt, Rt;
 
-    final int liftPosition = liftMotor.getCurrentPosition();
-
     final double RIGHTGrab_COMPLETEOPEN = 0.8;
     final double RIGHTGrab_CLOSE = 0.33; //used to be 0.4
     final double LEFTGrab_COMPLETEOPEN = 0.2;
@@ -35,13 +33,11 @@ public class RevRoboticsOp extends OpMode {
     final double RIGHTGrab_OPEN = 0.5;
     final double LEFTGrab_OPEN = 0.5;
 
-    // Right, left, and center are facing the back of the bot
-    final double JEWEL_UP = 0.94;
-    final double JEWEL_DOWN = 0.38;
-    final double JEWEL_RIGHT = 0.25;
-    final double JEWEL_CENTER = 0.15;
-    final double JEWEL_LEFT = 0.05;
-    final double JEWEL_RETRY = 0.12;
+    final double JEWEL_UP = 0 + 0.94;
+    final double JEWEL_DOWN = 0 + 0.4;
+    final double JEWEL_RIGHT = 0 + 0.100;
+    final double JEWEL_CENTER = 0 + 0.182;
+    final double JEWEL_LEFT = +0.2382;
 
     public void init() {
         frontLeft = hardwareMap.dcMotor.get("frontLeft");
@@ -64,7 +60,7 @@ public class RevRoboticsOp extends OpMode {
 
         myTimer = new ElapsedTime(ElapsedTime.Resolution.MILLISECONDS);
 
-        topRightGrab.setPosition(RIGHTGrab_COMPLETEOPEN);
+        topRightGrab.setPosition(0.7);
         topLeftGrab.setPosition(LEFTGrab_COMPLETEOPEN);
         bottomRightGrab.setPosition(LEFTGrab_COMPLETEOPEN);
         bottomLeftGrab.setPosition(RIGHTGrab_COMPLETEOPEN);
@@ -116,7 +112,6 @@ public class RevRoboticsOp extends OpMode {
             backRight.setPower(-1.0);
         }*/
 
-       // TODO: Fix logic on strafe
         if (gamepad1.x) {
 
             frontLeft.setPower(-1.0);
@@ -142,58 +137,49 @@ public class RevRoboticsOp extends OpMode {
         backRight.setPower(-gamepad1.left_stick_y/*+gamepad1.left_stick_x*/ - gamepad1.right_stick_x);
 
 
-        /*if (gamepad2.a) {
+        if (gamepad1.a) {
             jewelRaiser.setPosition(JEWEL_DOWN);
-        } else if (gamepad2.b) {
+        } else if (gamepad1.b) {
             jewelRaiser.setPosition(JEWEL_UP);
         }
 
 
-        if (gamepad2.x&&gamepad2.y ) {
+        if (gamepad1.x && gamepad1.y) {
             myTimer.reset();
             jewelKnocker.setPosition(JEWEL_CENTER);
-        }
-        else if (gamepad2.x && (myTimer.time() > 200)) {
+        } else if (gamepad2.x && (myTimer.time() > 200)) {
             jewelKnocker.setPosition(JEWEL_LEFT);
-        }
-        else if (gamepad2.y && (myTimer.time() > 200)) {
+        } else if (gamepad2.y && (myTimer.time() > 200)) {
             jewelKnocker.setPosition(JEWEL_RIGHT);
         }
-*/
+
 
         // trivial change
-        if (gamepad2.dpad_up) {
-            liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            liftMotor.getCurrentPosition();
-            liftMotor.setPower(0.5);
-        } else if (gamepad2.dpad_down) {
-            liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            liftMotor.getCurrentPosition();
-            liftMotor.setPower(-0.5);
+        if (gamepad1.dpad_up) {
+            liftMotor.setPower(1.0);
+        } else if (gamepad1.dpad_down) {
+            liftMotor.setPower(-1.0);
         } else {
-           // liftMotor.setPower(0);
-            liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            liftMotor.setTargetPosition(liftPosition);
-            liftMotor.setPower(.3);
+            // liftMotor.setPower(0);
+            liftMotor.setPower(.05);
         }
-        //can also do joystick
         //options to fix lift fall--1. set small power to motor (.05), 2. use elastics to counter weight
 
 
         //Binary system for grabbers
 
         //if (gamepad2.left_bumper && gamepad2.right_bumper) {
-        if (gamepad2.y){
+        if (gamepad1.y) {
             topRightGrab.setPosition(RIGHTGrab_COMPLETEOPEN);
             topLeftGrab.setPosition(LEFTGrab_COMPLETEOPEN);
             bottomLeftGrab.setPosition(RIGHTGrab_COMPLETEOPEN);
             bottomRightGrab.setPosition(LEFTGrab_COMPLETEOPEN);
-        } else if (gamepad2.left_bumper) {
+        } else if (gamepad1.left_bumper) {
             topRightGrab.setPosition(RIGHTGrab_OPEN);
             topLeftGrab.setPosition(LEFTGrab_OPEN);
             bottomLeftGrab.setPosition(RIGHTGrab_OPEN);
             bottomRightGrab.setPosition(LEFTGrab_OPEN);
-        } else if (gamepad2.right_bumper) {
+        } else if (gamepad1.right_bumper) {
             topRightGrab.setPosition(RIGHTGrab_CLOSE);
             topLeftGrab.setPosition(LEFTGrab_CLOSE);
             bottomLeftGrab.setPosition(RIGHTGrab_CLOSE);
