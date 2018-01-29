@@ -139,7 +139,8 @@ public class RevRoboticsOpSinglePlayer extends OpMode {
 
         if (gamepad1.a) {
             jewelRaiser.setPosition(JEWEL_DOWN);
-        } else if (gamepad1.b) {
+        } else// if (gamepad1.b)
+        {
             jewelRaiser.setPosition(JEWEL_UP);
         }
 

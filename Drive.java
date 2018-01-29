@@ -79,7 +79,6 @@ public class Drive extends Object {
         while (frontRight.isBusy() && frontLeft.isBusy()) ;
 
         StopDriving();
-        TurnLeftCorrect(target);
     }
 
     public void TurnRightDegree(double power, double degrees) {
@@ -117,7 +116,6 @@ public class Drive extends Object {
         while (frontRight.isBusy() && frontLeft.isBusy()) ;
 
         StopDriving();
-        TurnRightCorrect(target);
     }
 
     public void StrafeRightDistance(double power, double distance) {
@@ -399,5 +397,29 @@ public class Drive extends Object {
 
         }
 }
+
+    public void TurnDegrees (double power, double degrees) {
+      if (degrees > 0){
+          double target;
+          opmode.telemetry.addData("Gyro", gyro.getIntegratedZValue());
+          opmode.telemetry.update();
+          target = gyro.getIntegratedZValue() + degrees;
+
+          TurnLeftDegree(power, degrees);
+          TurnLeftCorrect(target);
+      }
+      else if (degrees < 0) {
+          double target;
+          opmode.telemetry.addData("Gyro", gyro.getIntegratedZValue());
+          opmode.telemetry.update();
+          target = gyro.getIntegratedZValue() - degrees;
+
+          TurnRightDegree(power, degrees);
+          TurnRightCorrect(target);
+      }
+      else{
+      }
+    }
+
 }
 

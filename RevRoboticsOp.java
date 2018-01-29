@@ -26,7 +26,11 @@ public class RevRoboticsOp extends OpMode {
 
     float Lt, Rt;
 
-    final int liftPosition = liftMotor.getCurrentPosition();
+    // final int liftPosition = liftMotor.getCurrentPosition();
+    // Note 1: NO "final" -- that makes liftPosition unchangeable.
+    // Note 2: NO initialization -- liftMotor is not yet defined.
+
+    int liftPosition;
 
     final double RIGHTGrab_COMPLETEOPEN = 0.8;
     final double RIGHTGrab_CLOSE = 0.33; //used to be 0.4
@@ -83,6 +87,8 @@ public class RevRoboticsOp extends OpMode {
         frontRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backLeft.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         backRight.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //liftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
     }
 
     public void loop() {
@@ -96,8 +102,8 @@ public class RevRoboticsOp extends OpMode {
         telemetry.addData("Green: ", green);
         telemetry.addData("Blue: ", blue);*/
         //telemetry.addData("gyro: ",gyro.getIntegratedZValue());
-        telemetry.addData("Front Left:", gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
-        telemetry.addData("Back Right:", gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
+        //telemetry.addData("Front Left:", gamepad1.left_stick_y - gamepad1.left_stick_x - gamepad1.right_stick_x);
+        //telemetry.addData("Back Right:", gamepad1.left_stick_y - gamepad1.left_stick_x + gamepad1.right_stick_x);
 
        /* if (gamepad1.dpad_up){
 
@@ -116,31 +122,30 @@ public class RevRoboticsOp extends OpMode {
             backRight.setPower(-1.0);
         }*/
 
-       // TODO: Fix logic on strafe
-        if (gamepad1.x) {
+       // TODO: Fix logic on strafe  DONE
+     /*   if (gamepad1.x) {
 
-            frontLeft.setPower(-1.0);
-            frontRight.setPower(1.0);
-            backLeft.setPower(1.0);
-            backRight.setPower(-1.0);
-
-
-        }
-
-        if (gamepad1.b) {
-
-            frontLeft.setPower(1.0);
-            frontRight.setPower(-1.0);
-            backLeft.setPower(-1.0);
-            backRight.setPower(1.0);
+            frontLeft.setPower(-0.5);
+            frontRight.setPower(0.5);
+            backLeft.setPower(0.5);
+            backRight.setPower(-0.5);
 
         }
 
-        frontLeft.setPower(-gamepad1.left_stick_y/*+gamepad1.left_stick_x*/ + gamepad1.right_stick_x);
-        frontRight.setPower(-gamepad1.left_stick_y/*-gamepad1.left_stick_x*/ - gamepad1.right_stick_x);
-        backLeft.setPower(-gamepad1.left_stick_y/*-gamepad1.left_stick_x*/ + gamepad1.right_stick_x);
-        backRight.setPower(-gamepad1.left_stick_y/*+gamepad1.left_stick_x*/ - gamepad1.right_stick_x);
+        else if (gamepad1.b) {
 
+            frontLeft.setPower(0.5);
+            frontRight.setPower(-0.5);
+            backRight.setPower(0.5);
+            backLeft.setPower(-0.5);
+
+        }*/
+        //else {
+            frontLeft.setPower(-gamepad1.left_stick_y+gamepad1.left_stick_x + gamepad1.right_stick_x);
+            frontRight.setPower(-gamepad1.left_stick_y-gamepad1.left_stick_x - gamepad1.right_stick_x);
+            backLeft.setPower(-gamepad1.left_stick_y-gamepad1.left_stick_x + gamepad1.right_stick_x);
+            backRight.setPower(-gamepad1.left_stick_y+gamepad1.left_stick_x - gamepad1.right_stick_x);
+        //}
 
         /*if (gamepad2.a) {
             jewelRaiser.setPosition(JEWEL_DOWN);
@@ -163,18 +168,19 @@ public class RevRoboticsOp extends OpMode {
 
         // trivial change
         if (gamepad2.dpad_up) {
-            liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            /*liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             liftMotor.getCurrentPosition();
-            liftMotor.setPower(0.5);
+            liftPosition = liftMotor.getCurrentPosition();*/
+            liftMotor.setPower(0.9);
         } else if (gamepad2.dpad_down) {
-            liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            liftMotor.getCurrentPosition();
-            liftMotor.setPower(-0.5);
+            /*liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            liftPosition = liftMotor.getCurrentPosition();*/
+            liftMotor.setPower(-0.9);
         } else {
-           // liftMotor.setPower(0);
-            liftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-            liftMotor.setTargetPosition(liftPosition);
-            liftMotor.setPower(.3);
+           /*liftMotor.setPower(0);
+            liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            liftMotor.setTargetPosition(liftPosition);*/
+            liftMotor.setPower(0.05);
         }
         //can also do joystick
         //options to fix lift fall--1. set small power to motor (.05), 2. use elastics to counter weight
